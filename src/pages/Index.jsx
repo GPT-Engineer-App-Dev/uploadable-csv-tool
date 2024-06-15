@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, VStack, Text, Button, Input, Table, Thead, Tbody, Tr, Th, Td, IconButton, useColorMode } from "@chakra-ui/react";
+import { Container, VStack, Text, Button, Input, Table, Thead, Tbody, Tr, Th, Td, IconButton, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { FaTrash, FaPlus, FaSun, FaMoon } from "react-icons/fa";
 import Papa from "papaparse";
 import { CSVLink } from "react-csv";
@@ -10,6 +10,10 @@ const Index = () => {
   const [fileName, setFileName] = useState("edited_data.csv");
 
   const { colorMode, toggleColorMode } = useColorMode();
+
+  const bg = useColorModeValue("blue.100", "blue.800");
+  const tableBg = useColorModeValue("blue.200", "blue.700");
+  const buttonBg = useColorModeValue("blue.300", "blue.600");
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -45,16 +49,16 @@ const Index = () => {
   };
 
   return (
-    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center">
+    <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bg={bg}>
       <VStack spacing={4} width="100%">
         <Text fontSize="2xl">CSV Upload and Edit Tool</Text>
-        <Button onClick={toggleColorMode} alignSelf="flex-end">
+        <Button onClick={toggleColorMode} alignSelf="flex-end" bg={buttonBg}>
           {colorMode === "light" ? <FaMoon /> : <FaSun />}
         </Button>
         <Input type="file" accept=".csv" onChange={handleFileUpload} />
         {data.length > 0 && (
           <>
-            <Table variant="simple">
+            <Table variant="simple" bg={tableBg}>
               <Thead>
                 <Tr>
                   {headers.map((header) => (
@@ -78,11 +82,11 @@ const Index = () => {
                 ))}
               </Tbody>
             </Table>
-            <Button leftIcon={<FaPlus />} onClick={handleAddRow}>
+            <Button leftIcon={<FaPlus />} onClick={handleAddRow} bg={buttonBg}>
               Add Row
             </Button>
             <CSVLink data={data} headers={headers} filename={fileName}>
-              <Button>Download CSV</Button>
+              <Button bg={buttonBg}>Download CSV</Button>
             </CSVLink>
           </>
         )}
